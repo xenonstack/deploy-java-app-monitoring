@@ -26,16 +26,16 @@
     msg: "{{ mysql_temp_password.stdout }}"
     verbosity: 2
 
-#- name: Changing Root Password
-#  shell: '/usr/bin/mysqladmin -u root -p"{{ mysql_temp_password.stdout }}" password {{ mysql_root_db_pass }}'
-#  register: changing_root_password
-#  failed_when:
-#    - "'error' in changing_root_password.stderr"
+- name: Changing Root Password
+  shell: '/usr/bin/mysqladmin -u root -p"{{ mysql_temp_password.stdout }}" password {{ mysql_root_db_pass }}'
+  register: changing_root_password
+  failed_when:
+    - "'error' in changing_root_password.stderr"
 
-#- name: Error In changing Root Password | if Error
-#  debug:
-#    msg: "{{ changing_root_password.stderr }}"
-#    verbosity: 2
+- name: Error In changing Root Password | if Error
+  debug:
+    msg: "{{ changing_root_password.stderr }}"
+    verbosity: 2
 
 - name: Removing anonymous user
   mysql_user:
