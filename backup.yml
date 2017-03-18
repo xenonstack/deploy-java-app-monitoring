@@ -1,0 +1,9 @@
+---
+
+- hosts: test_host
+  remote_user: root
+  # become: true
+  # become_user: root
+  gather_facts: true
+  roles:
+    - { role: percona_xtrabackup }

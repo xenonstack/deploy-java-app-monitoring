@@ -1,0 +1,8 @@
+[Unit]
+Description=Mysql Exporter
+
+[Service]
+ExecStart=/usr/share/prometheus/mysqld_exporter -config.my-cnf=/root/.my.cnf
+
+[Install]
+WantedBy=default.target
