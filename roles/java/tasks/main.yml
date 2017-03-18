@@ -1,8 +1,11 @@
 ---
 - name: Installing Openjdk  | RedHat Based Systems
   yum:
-    name: java-1.8.0-openjdk
+    name: "{{ item }}"
     state: present
+  with_items:
+    - libselinux-python
+    - java-1.8.0-openjdk
 
 - name: Getting Location of installed java
   shell: "readlink -fsq $(which java) | sed 's:/bin/java::'"
