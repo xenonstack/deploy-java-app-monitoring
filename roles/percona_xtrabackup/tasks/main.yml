@@ -12,8 +12,8 @@
 
 - name: create the mysql user for backup
   mysql_user:
-    name: {{ backup_user }}
-    password: {{ backuppassword }}
+    name: "{{ backup_user }}"
+    password: "{{ backuppassword }}"
     priv: '*.*:RELOAD,LOCK TABLES,REPLICATION CLIENT'
     login_user: root
     login_password: "{{ mysql_root_db_pass }}"
