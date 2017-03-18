@@ -1,0 +1,8 @@
+[Unit]
+Description=Node Exporter
+
+[Service]
+ExecStart=/usr/share/prometheus/node_exporter
+
+[Install]
+WantedBy=default.target

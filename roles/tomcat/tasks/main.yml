@@ -1,0 +1,48 @@
+---
+- name: add group tomcat
+  group: name=tomcat
+
+- name: add user tomcat
+  user: name=tomcat group=tomcat home=/usr/share/tomcat createhome=no
+  become: True
+  become_method: sudo
+
+- name: Download and unarchive tomcat-8
+  unarchive: src=http://mirror.fibergrid.in/apache/tomcat/tomcat-8/v8.5.12/bin/apache-tomcat-8.5.12.tar.gz dest=/opt/ remote_src=True creates=/opt/apache-tomcat-8.5.12
+
+- name: Symlink install directory
+  file: src=/opt/apache-tomcat-8.5.12 path=/usr/share/tomcat state=link
+
+- name: Change ownership of Tomcat installation
+  file: path=/usr/share/tomcat/ owner=tomcat group=tomcat state=directory recurse=yes
+
+- name: Configure Tomcat server
+  template: src=server.xml dest=/usr/share/tomcat/conf/
+  notify: restart tomcat
+
+- name: Configure Tomcat users
+  template: src=tomcat-users.xml dest=/usr/share/tomcat/conf/
+  notify: restart tomcat
+
+- name: Configure IP address restriction
+  template: src=context.xml dest=/usr/share/tomcat/webapps/manager/META-INF/
+  notify: restart tomcat
+
+- name: Configure IP address restriction
+  template: src=context.xml dest=/usr/share/tomcat/webapps/host-manager/META-INF/
+  notify: restart tomcat
+
+- name: Install Tomcat init script
+  template: src=tomcat.service dest=/etc/systemd/system/ mode=0755
+
+- name: Start Tomcat
+  systemd: state=started name=tomcat daemon_reload=yes enabled=True
+
+- name: insert firewalld rule for tomcat http port
+  firewalld: port={{ http_port }}/tcp permanent=true state=enabled immediate=yes
+
+- name: insert firewalld rule for tomcat https port
+  firewalld: port={{ https_port }}/tcp permanent=true state=enabled immediate=yes
+
+- name: wait for tomcat to start
+  wait_for: port={{http_port}}

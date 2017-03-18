@@ -1,0 +1,13 @@
+---
+- name: Copy the MYSQL connector
+  copy:
+    src: mysql-connector-java-5.1.41-bin.jar
+    dest: /usr/share/tomcat/lib/mysql-connector-java-5.1.41-bin.jar
+
+- name: deploy the war file
+  copy:
+    src: deluxe-call-1.0.war
+    dest: /usr/share/tomcat/webapps/deluxe-call-1.0.war
+
+- name: Restart the tomcat server
+  systemd: state=restarted name=tomcat

@@ -1,0 +1,15 @@
+---
+
+- hosts: 192.168.56.101
+  remote_user: root
+  become: true
+  become_user: root
+  gather_facts: true
+  roles:
+#    - { role: java}
+#    - { role: tomcat }
+#    - { role: mysql}
+#    - { role: java_app_deploy }
+#    - { role: nginx }
+#    - { role: percona_xtrabackup }
+    - { role: monitoring }    

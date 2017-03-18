@@ -1,0 +1,23 @@
+---
+- name: Install the Percona's repository
+  yum: name=http://www.percona.com/downloads/percona-release/redhat/0.1-3/percona-release-0.1-3.noarch.rpm state=present
+
+- name: Install XtraBackup
+  yum: name={{ item }} state=installed
+  with_items:
+     - percona-xtrabackup
+
+- name: create a directory for backups
+  file: path=/root/data/backups state=directory mode=0755 recurse=yes
+
+- name: create the mysql user for backup
+  mysql_user:
+    name: {{ backup_user }}
+    password: {{ backuppassword }}
+    priv: '*.*:RELOAD,LOCK TABLES,REPLICATION CLIENT'
+    login_user: root
+    login_password: "{{ mysql_root_db_pass }}"
+    state: present
+
+- name: Perform the backup Process
+  command: innobackupex --user={{ backup_user }}  --password={{ backup_password }} /root/data/backups

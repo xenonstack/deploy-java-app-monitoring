@@ -1,0 +1,21 @@
+---
+- name: Installing Openjdk  | RedHat Based Systems
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: Getting Location of installed java
+  shell: "readlink -fsq $(which java) | sed 's:/bin/java::'"
+  register: installed_java_location
+
+- name: Setting JAVA_HOME={{ installed_java_location.stdout }}
+  blockinfile:
+    dest: /etc/profile.d/java.sh
+    state: present
+    create: true
+    owner: root
+    group: root
+    mode: 0755
+    block: |
+      export JAVA_HOME={{ installed_java_location.stdout }}
+      export PATH=$PATH:$JAVA_HOME/bin
