@@ -22,11 +22,13 @@ ansible-playbook main.yml -i inventory
 # To view Running Application
 * update your hosts file with following enteries
 ```
-<ip address of centos 7 machine > tomcat.demo.com promethous.demo.com grafana.demo.com
+<ip address of centos 7 machine> tomcat.demo.com promethous.demo.com grafana.demo.com
 ```
 # Need to add data source in grafana
-* add data source manually
+* add data source manually in grafana server
 
+# Add following mentioned json file for Graphs to Grafana Dashboard
+*
 # For Backup of Mysql Database
 
 ```
