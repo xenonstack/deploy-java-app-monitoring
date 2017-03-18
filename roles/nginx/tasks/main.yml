@@ -3,7 +3,23 @@
   yum: name=epel-release state=installed
 
 - name: Install nginx package
-  yum: name=nginx state=installed update_cache=yes
+  yum: name=nginx state=installed
+
+- name: Copying Nginx Conf
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Copying Nginx Reverse Proxy Configurations
+  template:
+    src: "{{ item.src }}"
+    dest: "/etc/nginx/conf.d/{{ item.dest }}"
+  with_items:
+    - { src: app.conf, dest: app.conf }
+    - { src: grafana.conf, dest: grafana.conf }
+    - { src: prometheus.conf, dest: prometheus.conf }
+  notify:
+    - Restarting Nginx
 
 - name: Start the nginx server
   service: name=nginx state=started enabled=yes

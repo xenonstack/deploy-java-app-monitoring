@@ -2,7 +2,7 @@
 Description=Node Exporter
 
 [Service]
-ExecStart=/usr/share/prometheus/node_exporter
+ExecStart=ExecStart=/usr/share/prometheus/node_exporter-0.13.0.linux-amd64/node_exporter
 
 [Install]
 WantedBy=default.target

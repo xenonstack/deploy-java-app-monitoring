@@ -6,6 +6,7 @@
   with_items:
     - libselinux-python
     - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-devel
 
 - name: Getting Location of installed java
   shell: "readlink -fsq $(which java) | sed 's:/bin/java::'"

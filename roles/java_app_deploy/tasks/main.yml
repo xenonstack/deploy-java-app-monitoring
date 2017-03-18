@@ -8,6 +8,5 @@
   copy:
     src: deluxe-call-1.0.war
     dest: /usr/share/tomcat/webapps/deluxe-call-1.0.war
-
-- name: Restart the tomcat server
-  systemd: state=restarted name=tomcat
+  notify:
+    - Restarting Tomcat Server

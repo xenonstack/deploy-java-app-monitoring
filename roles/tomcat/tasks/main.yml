@@ -38,11 +38,20 @@
 - name: Start Tomcat
   systemd: state=started name=tomcat daemon_reload=yes enabled=True
 
+- name: Getting firewalld Status
+  raw: which firewalld
+  register: firewalld_status
+  ignore_errors: True
+
 - name: insert firewalld rule for tomcat http port
   firewalld: port={{ http_port }}/tcp permanent=true state=enabled immediate=yes
+  when:
+    - firewalld_status | succeeded
 
 - name: insert firewalld rule for tomcat https port
   firewalld: port={{ https_port }}/tcp permanent=true state=enabled immediate=yes
+  when:
+    - firewalld_status | succeeded
 
 - name: wait for tomcat to start
   wait_for: port={{http_port}}

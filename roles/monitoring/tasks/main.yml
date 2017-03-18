@@ -1,7 +1,7 @@
 ---
 - name: Download Prometheus tar
   get_url:
-    url: https://github.com/prometheus/prometheus/releases/download/0.16.0/prometheus-0.16.0.linux-amd64.tar.gz
+    url: https://github.com/prometheus/prometheus/releases/download/v1.5.2/prometheus-1.5.2.linux-amd64.tar.gz
     dest: /usr/share/
 
 - name: create a directory for prometheus
@@ -12,24 +12,36 @@
 
 - name: unarchive the prometheus tar
   unarchive:
-    src: /usr/share/prometheus-0.16.0.linux-amd64.tar.gz
+    src: /usr/share/prometheus-1.5.2.linux-amd64.tar.gz
     dest: /usr/share/prometheus
     remote_src: True
 
 - name: Download the node exporter
   unarchive:
-    src: https://github.com/prometheus/node_exporter/releases/download/0.11.0/node_exporter-0.11.0.linux-amd64.tar.gz
+    src: https://github.com/prometheus/node_exporter/releases/download/v0.13.0/node_exporter-0.13.0.linux-amd64.tar.gz
+    dest: /usr/share/prometheus
+    remote_src: True
+
+- name: Download Mysql exporter
+  unarchive:
+    src: https://github.com/prometheus/mysqld_exporter/releases/download/v0.9.0/mysqld_exporter-0.9.0.linux-amd64.tar.gz
     dest: /usr/share/prometheus
     remote_src: True
 
 - name: Install node_exporter init script
   template: src=node_exporter.service dest=/etc/systemd/system/ mode=0755
 
+- name: Install Mysql_exporter init script
+  template: src=mysql_exporter.service dest=/etc/systemd/system/ mode=0755
+
 - name: Start node_exporter
   systemd: state=started name=node_exporter daemon_reload=yes enabled=True
 
+- name: Start mysql_exporter
+  systemd: state=started name=mysql_exporter daemon_reload=yes enabled=True
+
 - name: Copy the prometheus.yml file
-  template: src=prometheus.yml.j2 dest=/usr/share/prometheus/prometheus-0.16.0.linux-amd64/prometheus.yml
+  template: src=prometheus.yml.j2 dest=/usr/share/prometheus/prometheus-1.5.2.linux-amd64/prometheus.yml
 
 - name: Install prometheus init script
   template: src=prometheus.service dest=/etc/systemd/system/ mode=0755

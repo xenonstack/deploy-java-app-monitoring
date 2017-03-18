@@ -1,3 +1,4 @@
+---
 mysql_root_db_pass: root
 backup_user: backupuser
 backup_password: backuppassword
