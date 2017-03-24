@@ -4,9 +4,15 @@
     src: mysql-connector-java-5.1.41-bin.jar
     dest: /usr/share/tomcat/lib/mysql-connector-java-5.1.41-bin.jar
 
+- name: Removing Root Folder | if exists
+  file:
+    path: /usr/share/tomcat/webapps/ROOT
+    state: absent
+  ignore_errors: true
+
 - name: deploy the war file
   copy:
     src: deluxe-call-1.0.war
-    dest: /usr/share/tomcat/webapps/deluxe-call-1.0.war
+    dest: /usr/share/tomcat/webapps/ROOT.war
   notify:
     - Restarting Tomcat Server
