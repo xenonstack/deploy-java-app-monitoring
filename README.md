@@ -40,3 +40,7 @@ Add following mentioned json file for Graphs to Grafana Dashboard. add all the j
 ```
 ansible-playbook backup.yml -i inventory
 ```
+### For Restore of Mysql Database from sql file
+
+```
+ansible-playbook restore.yml -i inventory

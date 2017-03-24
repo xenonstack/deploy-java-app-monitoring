@@ -1,0 +1,6 @@
+---
+
+mysql_port: 3306
+mysql_address: localhost
+mysql_dbname: dc
+mysql_root_pass: root

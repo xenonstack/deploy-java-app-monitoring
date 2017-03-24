@@ -1,0 +1,21 @@
+---
+
+- name: Copying Dump file to temporary folder
+  copy:
+    src: dc.sql
+    dest: /tmp/dc.sql
+
+- name: Import dc.sql Dump file
+  mysql_db:
+    state: import
+    name: "{{ mysql_dbname }}"
+    target: /tmp/dc.sql
+    login_host: "{{ mysql_address }}"
+    login_user: "{{ mysql_root_pass }}"
+    login_password: "{{ mysql_root_pass }}"
+    login_port: "{{ mysql_port }}"
+
+- name: Removing Temporary Dump file
+  file:
+    path: /tmp/dc.sql
+    state: absent
